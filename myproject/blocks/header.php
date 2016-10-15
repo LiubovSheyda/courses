@@ -1,3 +1,3 @@
 <div class="header">
-	<a href="index.php">LiubovSheyda</a>
+	<a href="/index">LiubovSheyda</a>
 </div>

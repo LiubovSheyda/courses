@@ -1,72 +1,66 @@
 <?php
+header('Content-Type: text/html; charset=utf-8');
+//$pathChunks = (!empty($_GET['path'])) ? explode('-', $_GET['path']):[];
+
 // Map of tasks by section and task number
-$tasksMap = [
-	'loops' => [
-		'title' => 'Loops',
-		'tasks' => [
-			1,
-			2
-		]
-	]
-];
+require_once __DIR__ . '/library/index.php';
 //	var_dump($_GET);
-// We have one entry point of application, path GET variable should have #section#-#tasknumber# format
-$pathChunks = (!empty($_GET['path'])) ? explode('-', $_GET['path']) : '';
-// @todo Handle case when 0 and 1 keys don't exist in $pathChunks. For example, we should show 404 error code.
-if(!$pathChunks) {	
-	/*echo "<script>document.getElementById('content').innerHTML = '<p>Привет!!!</p>';</script>";*/
-	$js_script = "document.getElementById('content').innerHTML = '<p>Привет!!!</p>';"; 
-	exec_js($js_script);
+
+$pageCode = 'index';
+$pageParameters = [];
+$urlChunks = [];
+if (!empty($_GET['path'])) {
+	$urlChunks = explode('/', $_GET['path']);
+	if (!empty($urlChunks[0])){
+		$pageCode = $urlChunks[0];
+	}
+	if (!empty($urlChunks[1])){
+		$pageParameters = explode('-', $urlChunks[1]);
+	}
+}
+//var_dump($urlChunks);
+//print_r(sprintf('Page  code: %s', $pageCode));
+
+switch ($pageCode) {
+	case 'tasks':
+		$section = (!empty($pageParameters[0])) ? $pageParameters[0] : '';
+		$taskNumber = (!empty($pageParameters[1])) ? $pageParameters[1] : '0';
+		$pageData = getTask($section, $taskNumber);
+		break;
+	default:
+			$pageData = [];
+		break;
 }
 
-/*$section = $pathChunks[0];
-$task = $pathChunks[1];
+$pathToView =  __DIR__ . '/blocks/pages/'. $pageCode . '.php';
+if (!file_exists($pathToView)) {
+	$pageCode = '404';
+	$pathToView =  __DIR__ . '/blocks/pages/'. $pageCode . '.php';
 
-$sectionData = $tasksMap[$section];
-$tasksName = $task;
-$titleChunks = [
-	$sectionData['title'],
-	$tasksName
-];
-$pageTitle = implode(" -> ", $titleChunks);
+}
 
-require __DIR__ . '/tasks/' . $section . '/' . $task . '.php';*/
+//$pathChunks = explode('-', $urlChunks[1]);
+//$section = $pageParameters[0];
+//$task = $pageParameters[1];
+
 ?>
 <!DOCTYPE html>
 <html>
 <head>
 	<title>My tasks</title>
-	<link rel="stylesheet" type="text/css" href="css/style.css">
+	<link rel="stylesheet" type="text/css" href="/css/style.css">
 </head>
 
 <body>
 <div class="wrapper">
 	<?php require('blocks/header.php'); ?>
 	<div class="main">
-
-	<?php require 'blocks/menu.php'; ?>
-	<div class="content" id="content">
-		<h1><?php echo $pageTitle; ?></h1>
-		<div class="task-item">
-			Task:<br>
-			<?php echo $description; ?>
-		</div>
-		<div class="task-item">
-			Input:<br>
-			<?php echo $inputData; ?>
-		</div>
-		<div class="task-item">
-			Output:<br>
-			<?php echo $result; ?>
-		</div>
-		<div class="task-item">
-			Code:<br>
-			<?php highlight_string ($listing); ?>
-
+		<?php require 'blocks/menu.php'; ?>
+		<div class="content">
+			<?php require __DIR__ . '/blocks/pages/'. $pageCode . '.php'; ?>	
 		</div>
 	</div>
-</div>
-<?php require 'blocks/footer.php'; ?>
+	<?php require 'blocks/footer.php'; ?>
 </div>
 
 </body>

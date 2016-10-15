@@ -2,8 +2,8 @@
 				<ul>
 					<li>Loops</li>
 						<ul>
-							<li><a href="loops-1">task1</a></li>
-							<li><a href="loops-2">task2</a></li>
+							<li><a href="/tasks/loops-1">task1</a></li>
+							<li><a href="/tasks/loops-2">task2</a></li>
 							<li>task3</li>
 							<li>task4</li>
 						</ul>
@@ -21,5 +21,6 @@
 							<li>task3</li>
 							<li>task4</li>
 						</ul>
+					<li><a href="/about">About</a></li>
 				</ul>
 			</div>
