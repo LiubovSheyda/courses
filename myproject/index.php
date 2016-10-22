@@ -1,9 +1,10 @@
 <?php
 header('Content-Type: text/html; charset=utf-8');
+
 //$pathChunks = (!empty($_GET['path'])) ? explode('-', $_GET['path']):[];
 
 // Map of tasks by section and task number
-require_once __DIR__ . '/library/index.php';
+require_once __DIR__ . '/src/library/index.php';
 //	var_dump($_GET);
 
 $pageCode = 'index';
@@ -32,10 +33,10 @@ switch ($pageCode) {
 		break;
 }
 
-$pathToView =  __DIR__ . '/blocks/pages/'. $pageCode . '.php';
+$pathToView =  __DIR__ . '/src/blocks/pages/'. $pageCode . '.php';
 if (!file_exists($pathToView)) {
 	$pageCode = '404';
-	$pathToView =  __DIR__ . '/blocks/pages/'. $pageCode . '.php';
+	$pathToView =  __DIR__ . '/src/blocks/pages/'. $pageCode . '.php';
 
 }
 
@@ -53,14 +54,14 @@ if (!file_exists($pathToView)) {
 
 <body>
 <div class="wrapper">
-	<?php require('blocks/header.php'); ?>
+	<?php require('src/blocks/header.php'); ?>
 	<div class="main">
-		<?php require 'blocks/menu.php'; ?>
+		<?php require 'src/blocks/menu.php'; ?>
 		<div class="content">
-			<?php require __DIR__ . '/blocks/pages/'. $pageCode . '.php'; ?>	
+			<?php require __DIR__ . '/src/blocks/pages/'. $pageCode . '.php'; ?>	
 		</div>
 	</div>
-	<?php require 'blocks/footer.php'; ?>
+	<?php require 'src/blocks/footer.php'; ?>
 </div>
 
 </body>
